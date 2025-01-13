@@ -11,54 +11,24 @@ import { PostMainCompTypes } from "../types"
 export default function PostMain({ post }: PostMainCompTypes) {
 
     useEffect(() => {
-    const video = document.getElementById(`video-${post?.id}`) as HTMLVideoElement;
-    const postMainElement = document.getElementById(`PostMain-${post.id}`);
+        const video = document.getElementById(`video-${post?.id}`) as HTMLVideoElement
+        const postMainElement = document.getElementById(`PostMain-${post.id}`);
 
-    if (!video) {
-        console.warn(`Video element not found for ID: video-${post?.id}`);
-        return;
-    }
-
-    if (!postMainElement) {
-        console.warn(`Post container not found for ID: PostMain-${post?.id}`);
-        return;
-    }
-
-    const observer = new IntersectionObserver(
-        (entries) => {
-            const entry = entries[0];
-
-            // Play or pause the video based on intersection
-            if (entry.isIntersecting) {
-                video.play().catch((err) => console.error("Video play error:", err));
-            } else {
-                video.pause();
-            }
-        },
-        { threshold: [0.6] } // Trigger when 60% of the element is visible
-    );
-
-    observer.observe(postMainElement);
-
-    // Cleanup observer on component unmount
-    return () => {
-        observer.disconnect();  
-    };
-}, [post?.id]);
-
-    const profileImageUrl = useCreateBucketUrl(post?.profile?.image);
-    const videoUrl = useCreateBucketUrl(post?.video_url);
+        if (postMainElement) {
+            let observer = new IntersectionObserver((entries) => {
+                entries[0].isIntersecting ? video.play() : video.pause()
+            }, { threshold: [0.6] });
+        
+            observer.observe(postMainElement);
+        }
+    }, [])
 
     return (
         <>
             <div id={`PostMain-${post.id}`} className="flex border-b py-6">
 
                 <div className="cursor-pointer">
-                    {profileImageUrl ? (
-                        <img className="rounded-full max-h-[60px]" width="60" src={profileImageUrl} />
-                    ) : (
-                        <div className="rounded-full max-h-[60px]" style={{ width: 60, height: 60, backgroundColor: '#ccc' }} />
-                    )}
+                    <img className="rounded-full max-h-[60px]" width="60" src={useCreateBucketUrl(post?.profile?.image)} />
                 </div>
 
                 <div className="pl-3 w-full px-4">
@@ -84,18 +54,14 @@ export default function PostMain({ post }: PostMainCompTypes) {
                         <div
                             className="relative min-h-[480px] max-h-[580px] max-w-[260px] flex items-center bg-black rounded-xl cursor-pointer"
                         >
-                            {videoUrl ? (
-                                <video 
-                                    id={`video-${post.id}`}
-                                    loop
-                                    controls
-                                    muted
-                                    className="rounded-xl object-cover mx-auto h-full" 
-                                    src="/videos/tiktok_video.mp4"
-                                />
-                            ) : (
-                                <div className="rounded-xl object-cover mx-auto h-full" style={{ backgroundColor: '#000', width: '100%', height: '100%' }} />
-                            )}
+                            <video 
+                                id={`video-${post.id}`}
+                                loop
+                                controls
+                                muted
+                                className="rounded-xl object-cover mx-auto h-full" 
+                                src="/videos/tiktok_video.mp4"
+                            />
                             <img 
                                 className="absolute right-2 bottom-10" 
                                 width="90" 

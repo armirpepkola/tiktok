@@ -119,4 +119,4 @@ export default function Post({ params }: PostPageTypes) {
             </div>
         </>
     )
-}   
+}

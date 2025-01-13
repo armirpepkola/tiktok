@@ -33,9 +33,9 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     try {
       const promise = await account.create(ID.unique(), email, password, name)
-      await account.createSession(email, password);
-
-      await useCreateProfile(promise?.$id, name, String(process.env.NEXT_PUBLIC_PLACEHOLDER_DEAFULT_IMAGE_ID), '')
+      await account.createEmailPasswordSession(email, password);
+      
+      await useCreateProfile(promise?.$id, name, String(process.env.NEXT_PUBLIC_PLACEHOLDER_DEFAULT_IMAGE_ID), '')
       await checkUser() 
 
     } catch (error) {
@@ -46,7 +46,8 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      await account.createSession(email, password);
+      await account.createEmailPasswordSession(email, password);
+      
       checkUser();
     } catch (error) {
       console.error(error);

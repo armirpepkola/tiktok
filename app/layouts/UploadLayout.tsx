@@ -1,3 +1,4 @@
+import React from "react"
 import TopNav from "./includes/TopNav"
 
 export default function UploadLayout({ children }: { children: React.ReactNode }) {

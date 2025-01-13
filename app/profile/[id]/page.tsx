@@ -2,24 +2,22 @@
 
 import PostUser from "@/app/components/profile/PostUser"
 import MainLayout from "@/app/layouts/MainLayout"
+import { BsPencil } from "react-icons/bs"
 import { useEffect } from "react"
 import { useUser } from "@/app/context/user"
+import ClientOnly from "@/app/components/ClientOnly"
 import { ProfilePageTypes, User } from "@/app/types"
 import { usePostStore } from "@/app/stores/post"
 import { useProfileStore } from "@/app/stores/profile"
 import { useGeneralStore } from "@/app/stores/general"
 import useCreateBucketUrl from "@/app/hooks/useCreateBucketUrl"
-import React, { use } from 'react';
-import { BsPencil } from 'react-icons/bs'
-import ClientOnly from "@/app/components/ClientOnly"
 
 export default function Profile({ params }: ProfilePageTypes) {
     const contextUser = useUser()
     let { postsByUser, setPostsByUser } = usePostStore()
     let { setCurrentProfile, currentProfile } = useProfileStore()
     let { isEditProfileOpen, setIsEditProfileOpen } = useGeneralStore()
-    const unwrappedParams = params;
-    
+
     useEffect(() => {
         setCurrentProfile(params?.id)
         setPostsByUser(params?.id)
@@ -53,7 +51,7 @@ export default function Profile({ params }: ProfilePageTypes) {
                             </ClientOnly>
 
                             
-                            {contextUser?.user?.id == unwrappedParams?.id ? (
+                            {contextUser?.user?.id == params?.id ? (
                                 <button 
                                     onClick={() => setIsEditProfileOpen(isEditProfileOpen = !isEditProfileOpen)}
                                     className="flex item-center rounded-md py-1.5 px-3.5 mt-3 text-[15px] font-semibold border hover:bg-gray-100"
@@ -76,7 +74,7 @@ export default function Profile({ params }: ProfilePageTypes) {
                             <span className="text-gray-500 font-light text-[15px] pl-1.5">Following</span>
                         </div>
                         <div className="mr-4">
-                            <span className="font-bold">0</span>
+                            <span className="font-bold">1</span>
                             <span className="text-gray-500 font-light text-[15px] pl-1.5">Followers</span>
                         </div>
                     </div>
